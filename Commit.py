@@ -6,9 +6,9 @@ PList = {"1": "Foundation in Engineering",
 def WriteFile(name,id,prog,marks,*file):
     if file != None:
         f = open("StudentData.txt","a")
-        f.write(f"Name:{name} \t ID:{id} \t Programme:{prog} \t, Marks:{marks}\n" )
+        f.write(f"Name:{name} \t ID:{id} \t Programme:{prog} \t, Marks:{marks}")
     else:
-        file.a(f"Name:{name} \t ID:{id} \t Programme:{prog} \t, Marks:{marks}\n")
+        file.a(f"\nName:{name} \t ID:{id} \t Programme:{prog} \t, Marks:{marks}")
 
 
 
