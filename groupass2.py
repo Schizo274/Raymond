@@ -9,7 +9,7 @@ def ReadFile(FileName):
     with open(FileName, "r") as file:
         Lines = file.readlines()
         print("Student ID\tProgramme\tName\tGPA")
-        with open("GPAs.txt", "a") as out:
+        with open("GPAs.txt", "w") as out:
             out.write("Student ID\tProgramme\tName\tGPA")
         for l in Lines:
             SplitLines = l.split(",")
@@ -45,16 +45,16 @@ def Calculate(MarkList):
         elif Marks >= 0 and Marks < 40:
             gpa = 0
         else: 
-            print("Please enter a valid mark")
+            return "Please enter a valid mark"
         total += gpa 
         count += 1
     return round(total / count,2)
 
-def Search():   
+def Search(FileName):   
     word = input("Enter a word to search >> ")
     word = word.lower()
-    print("ID\tProgramme\tName\tMarks")
-    with open("StudentData.txt") as file:
+    print("ID\tProgramme\tName\tGPA")
+    with open(FileName) as file:
         lines = file.readlines()
     count = 0
     for i in range(len(lines)):
@@ -78,37 +78,33 @@ count = 0
 
 print("1 -> Enter data in a text file with format ID Programme Name Marks")
 print("2 -> Enter data directly into the programme")
-print("3 -> Calculate GPA of students (manually typed)")
-print("4 -> Search for a specific entry in the data")
-print("5 -> Export data to a text file")
-print("6 -> End programme")
+print("3 -> Search for a specific entry in the data")
+print("4 -> End programme")
 
 while True:
     try:
         option = int(input("Enter your option >> "))
         if option == 1:
             FileName = input("Please enter the file name and ensure it is placed in the same folder as this programme >> ")
-            print(ReadFile(FileName))
+            ReadFile(FileName)
         elif option == 2:
             StudentName = input("Enter the name of student >> ")
             ID = input("Enter the student id >> ")
             Program = input(f"Enter program: {PList} >> ")
             SubjectNumber = input("Enter number of subjects >> ")
             if count == 0:
-                with open("StudentData.txt", "a") as out:
+                with open("StudentData.txt", "w") as out:
                     out.write("Student ID\tProgramme\tName\tMarks\tGPA")
                 count += 1
             ManualInput(StudentName, ID, Program, SubjectNumber)
+            print("The entry has been successfulyl added to a file named StudentData.txt")
         elif option == 3:
-            #activate cgpa calc
-            ReadFile("StudentData.txt")
+            HaveFile = input("Did you input data from a file? >> ")
+            if HaveFile == "yes":
+                Search("GPAs.txt")
+            elif HaveFile == "no":
+                Search("StudentData.txt")
         elif option == 4:
-            #search function
-            Search()
-        elif option == 5:
-            #export f(x)
-            pass
-        elif option == 6:
             print("Closing programme...")
             break
         else:
