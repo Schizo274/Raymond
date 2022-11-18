@@ -1,35 +1,34 @@
-PList = {"1": "Foundation in Engineering",
+PList = {"1": "Foundation in Engineering",  #list of programmes for the manual input
          "2": "Foundation in Arts",
          "3": "Foundation in Computing",
          "4": "Foundation in Business",
          "5": "Foundation in Science"}
 
-def ReadFile(FileName):
-    count = 0
-    with open(FileName, "r") as file:
+def ReadFile(FileName): #function to read from file
+    with open(FileName, "r") as file:   #accepts the file name  
         Lines = file.readlines()
-        print("Student ID\tProgramme\tName\tGPA")
-        with open("GPAs.txt", "w") as out:
-            out.write("Student ID\tProgramme\tName\tGPA")
+        print("Student ID\tProgramme\tName\tGPA")   #prints "header" in concole
+        with open("GPAs.txt", "w") as out:  #opens a new file called GPAs.txt
+            out.write("Student ID\tProgramme\tName\tGPA")   #prints "header" in file
         for l in Lines:
-            SplitLines = l.split(",")
-            print(f"{SplitLines[0]}\t{SplitLines[1]}\t{SplitLines[2]}\t{Calculate([int(mark) for mark in SplitLines[3:]])}")
+            SplitLines = l.split(",")   
+            print(f"{SplitLines[0]}\t{SplitLines[1]}\t{SplitLines[2]}\t{Calculate([float(mark) for mark in SplitLines[3:]])}")  #prints student information as well as GPA by calling the Calculate function in console
             with open("GPAs.txt", "a") as out:
-                out.write(f"\n{SplitLines[0]}\t{SplitLines[1]}\t{SplitLines[2]}\t{Calculate([int(mark) for mark in SplitLines[3:]])}")
+                out.write(f"\n{SplitLines[0]}\t{SplitLines[1]}\t{SplitLines[2]}\t{Calculate([float(mark) for mark in SplitLines[3:]])}") #appends student information and GPA to GPAs.txt
     print("This data has also been written to a file named GPAs.txt in the same folder as this programme.")
 
 def Calculate(MarkList):
     total = 0
     count = 0 
-    for Marks in MarkList:
-        if Marks >= 80 and Marks <= 100:
+    for Marks in MarkList:  #iterates through the list passed into the function 
+        if Marks >= 80 and Marks <= 100:    #checks which GPA the marks fit into
             gpa = 4.0
         elif Marks >= 75 and Marks < 80:
             gpa = 3.67
         elif Marks >= 70 and Marks < 75:
             gpa = 3.33
         elif Marks >= 65 and Marks < 70:
-            gpa = 3.0
+            gpa = 3.00
         elif Marks >= 60 and Marks < 65:
             gpa = 2.67
         elif Marks >= 55 and Marks < 60:
@@ -44,42 +43,69 @@ def Calculate(MarkList):
             gpa = 1.00
         elif Marks >= 0 and Marks < 40:
             gpa = 0
-        else: 
-            return "Please enter a valid mark"
-        total += gpa 
+        total += gpa    #sums all GPA values
         count += 1
-    return round(total / count,2)
+    return round(total / count,2)   #returns the GPA divided by number of subjects
 
-def Search(FileName):   
-    word = input("Enter a word to search >> ")
+def Search(FileName):   #function to search for a specific word accepts a file name to search 
+    word = input("Enter a word to search >> ")  #asks user to input the desired word to be found
     word = word.lower()
-    print("ID\tProgramme\tName\tGPA")
-    with open(FileName) as file:
+    print("ID\tProgramme\tName\tGPA")   #prints "header"
+    with open(FileName) as file:    #opens the file to search
         lines = file.readlines()
     count = 0
     for i in range(len(lines)):
-        if word in lines[i].lower():
-            print(lines[i])
+        if word in lines[i].lower():    #checks whether the word is contained in any of the entries
+            print(lines[i])     #prints the entry containing the word
             count += 1
     print(count, "matches.")
 
 
-def ManualInput(name, id, prog, SubjectNumber): #this fucntion no longer works
-    marks = []
-    for i in range(0,eval(SubjectNumber)):
-        CurrentMarks = int(input("Enter marks >> "))
-        marks.append(int(CurrentMarks))
-        gpa = Calculate(marks)
-    print(f"{id}\t{PList[prog]}\t{name}\t{marks}\t{gpa}")
+def ManualInput(name, id, prog, SubjectNumber):     #function allowing the user to input directly into the programme
+    marks = []  #defines a list to store the marks
+    for i in range(0,eval(SubjectNumber)):  #repeats for n number of subjects to ask for the marks of each subject
+        CurrentMarks = float(input(f"Enter marks for subject {i + 1} >> "))
+        marks.append(float(CurrentMarks))
+    gpa = Calculate(marks)  #calls function to calculate the GPA
+    print(f"{id}\t{PList[prog]}\t{name}\t{marks}\t{gpa}")   #prints the information in the entry in the console
     with open("StudentData.txt", "a") as out:
-        out.write(f"\n{id}\t{PList[prog]}\t{name}\t{marks}\t{gpa}")
+        out.write(f"\n{id}\t{PList[prog]}\t{name}\t{marks}\t{gpa}") #prints the information in a file called StudentData.txt
+
+def Sort(FileName):
+    index = []
+    with open(FileName, "r") as file:
+        lines = file.readlines()
+        for l in lines[1:]:
+            split = l.split()
+            for i in range(1, len(split)):
+                gpa = (split[-1])
+                if gpa not in index:
+                    index += [gpa]
+    hasSwap = True
+    tempIndexList = []
+    for i in range(len(index)):
+        tempIndexList += [i]
+    while hasSwap:
+        hasSwap = False
+        for i in range(len(index)):
+            if i == len(index)-1:
+                continue
+            if index[i] > index[i+1]:
+                hasSwap = True
+                tempIndexList[i], tempIndexList[i+1] = tempIndexList[i+1], tempIndexList[i]
+                index[i], index[i+1] = index[i+1], index[i]
+    for i in tempIndexList:
+        print(lines[i + 1])
+    return tempIndexList
 
 count = 0
 
+#printing instructions for user
 print("1 -> Enter data in a text file with format ID Programme Name Marks")
 print("2 -> Enter data directly into the programme")
 print("3 -> Search for a specific entry in the data")
-print("4 -> End programme")
+print("4 -> Sort entries based on CGPA")
+print("5 -> End programme")
 
 while True:
     try:
@@ -97,14 +123,14 @@ while True:
                     out.write("Student ID\tProgramme\tName\tMarks\tGPA")
                 count += 1
             ManualInput(StudentName, ID, Program, SubjectNumber)
-            print("The entry has been successfulyl added to a file named StudentData.txt")
+            print("The entry has been successfully added to a file named StudentData.txt")
         elif option == 3:
-            HaveFile = input("Did you input data from a file? >> ")
-            if HaveFile == "yes":
-                Search("GPAs.txt")
-            elif HaveFile == "no":
-                Search("StudentData.txt")
+            FileName = input("Input the name of the file you wish to search within >> ")
+            Search(FileName)
         elif option == 4:
+            FileName = input("Please input file that you wish to sort >> ")
+            Sort(FileName)
+        elif option == 5:
             print("Closing programme...")
             break
         else:
