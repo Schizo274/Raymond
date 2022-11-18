@@ -7,7 +7,7 @@ PList = {"1": "Foundation in Engineering",  #list of programmes for the manual i
 def ReadFile(FileName): #function to read from file
     with open(FileName, "r") as file:   #accepts the file name  
         Lines = file.readlines()
-        print("Student ID\tProgramme\tName\tGPA")   #prints "header" in concole
+        print("Student ID\tProgramme\tName\tGPA")   #prints "header" in console
         with open("GPAs.txt", "w") as out:  #opens a new file called GPAs.txt
             out.write("Student ID\tProgramme\tName\tGPA")   #prints "header" in file
         for l in Lines:
