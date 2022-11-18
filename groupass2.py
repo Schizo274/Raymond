@@ -100,18 +100,17 @@ def Sort(FileName):
 
 count = 0
 
-#printing instructions for user
-print("1 -> Enter data in a text file with format ID Programme Name Marks")
-print("2 -> Enter data directly into the programme")
-print("3 -> Search for a specific entry in the data")
-print("4 -> Sort entries based on CGPA")
-print("5 -> End programme")
-
 while True:
     try:
+        #printing instructions for user
+        print("1 -> Enter data in a text file with format ID Programme Name Marks")
+        print("2 -> Enter data directly into the programme")
+        print("3 -> Search for a specific entry in the data")
+        print("4 -> Sort entries based on CGPA")
+        print("5 -> End programme")
         option = int(input("Enter your option >> "))
         if option == 1:
-            FileName = input("Please enter the file name and ensure it is placed in the same folder as this programme >> ")
+            FileName = input("Please enter the file name and ensure it is placed in the same folder as this programme with the format ID, Program, Name, Marks >> ")
             ReadFile(FileName)
         elif option == 2:
             StudentName = input("Enter the name of student >> ")
