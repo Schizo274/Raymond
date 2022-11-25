@@ -90,7 +90,7 @@ def Sort(FileName):
         for i in range(len(index)):
             if i == len(index)-1:
                 continue
-            if index[i] > index[i+1]:
+            if index[i] < index[i+1]:
                 hasSwap = True
                 tempIndexList[i], tempIndexList[i+1] = tempIndexList[i+1], tempIndexList[i]
                 index[i], index[i+1] = index[i+1], index[i]
